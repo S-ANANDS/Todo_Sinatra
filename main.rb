@@ -1,30 +1,18 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sqlite3'
+
 get '/' do
   input=params['choice'].to_i
-
-erb :index,locals: {input: input    }
-# case input
-#   when '1'
+  erb :index,locals: {input: input    }
+end
+ 
+get '/add' do 
   
-#   when '2'
-    
-#   when '3'
-    
-    
-#   when '4'
-  
-#   when '5'
-  
-#   when '6'
-    
-#   when '7'
-
-#   when '8'
-  
-#   else
-
-# end
-
-
+  db=SQLite3::Database.open('todo.db')
+  db.execute 'CREATE TABLE IF NOT EXISTS Tasks(Name VARCHAR)'
+  value=params['task']
+  input=params['choice'].to_i
+  erb :one,locals: {input: input ,value: value   }
+  db.execute "INSERT INTO Tasks (Name) VALUES (?)",[value]
 end
