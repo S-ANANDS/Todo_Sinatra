@@ -1,0 +1,19 @@
+<html>
+  <head>
+  <style>
+  body{
+    background: yellow;
+  }
+  </style>
+  </head>
+  <body>
+      <form action='search' method='post'>
+            <p>Task_Id_To_Search</p>
+             <input type="text" name="id"><br>
+                <input type="submit" value="Id!">
+    </form>
+    <%=$db.execute 'SELECT * FROM Tasks WHERE Id = ? ',[user_input]%>
+   <a href='/'>Go back </a><br>
+   <a href='/result'>See Remaining Tasks </a>
+  </body>
+</html>

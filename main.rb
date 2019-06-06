@@ -47,13 +47,29 @@ post '/delete' do
   redirect '/delete'
   end
 
-delete '/' do
+get '/search' do
+  user_input=params['id']
+  erb :select, locals: { db: $db, user_input: user_input }
 end
 
-patch '/' do
-end
+post '/search' do
+  user_input=params['id']
+  erb :select, locals: { db: $db, user_input: user_input }
+  end
 
+  get '/completed' do
+    erb :completed
+    end
+    
+    post '/completed' do
+      user_input=params['id']
+      $db.execute 'SELECT * FROM Tasks WHERE Status = ? ', 'Completed'
+      redirect '/completed'
+      end
 
-# http://www.purgomalum.com/
-# If user input is
-# If user inpput has profanity, reject it.
+  get '/all' do 
+  
+  erb :mixture,locals: {db: $db}
+  
+  
+  end
