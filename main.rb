@@ -37,10 +37,22 @@ get '/result' do
   erb :data, locals: { db: $db }
 end
 
+get '/delete' do
+erb :delete
+end
+
+post '/delete' do
+  user_input=params['id']
+  $db.execute 'DELETE FROM Tasks WHERE ID = ?', [user_input]
+  redirect '/delete'
+  end
+
 delete '/' do
 end
+
 patch '/' do
 end
+
 
 # http://www.purgomalum.com/
 # If user input is
