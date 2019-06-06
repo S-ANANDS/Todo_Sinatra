@@ -1,0 +1,14 @@
+<html>
+  <head>
+  <style>
+  body{
+    background: yellow;
+  }
+  </style>
+  </head>
+  <body>
+      <p>All The Data</p>
+      <p><%=db.execute('SELECT * FROM Tasks')%></p>
+      <a href='/'>back</p>
+  </body>
+</html>
