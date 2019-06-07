@@ -63,7 +63,7 @@ post '/search' do
     
     post '/completed' do
       user_input=params['id']
-      $db.execute 'SELECT * FROM Tasks WHERE Status = ? ', 'Completed'
+      $db.execute "UPDATE Tasks SET Status = 'Completed' WHERE Id = ? ", [user_input]
       redirect '/completed'
       end
 
