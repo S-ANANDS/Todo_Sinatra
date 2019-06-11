@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 require 'net/http'
 require 'sinatra'
@@ -10,7 +10,7 @@ get '/' do
 end
 
 $db = SQLite3::Database.open('Todo.db')
-$db.execute 'CREATE TABLE IF NOT EXISTS Tasks(Id INTEGER PRIMARY KEY,Name VARCHAR,Status TEXT)'
+$db.execute 'CREATE TABLE IF NOT EXISTS Tasks(Id INTEGER PRIMARY KEY,Name VARCHAR,Status BOOLEAN)'
 
 get '/add' do
   erb :one
@@ -19,10 +19,17 @@ end
 post '/add' do
   @value = params['task']
   @state = params['status']
+  
   uri = URI('https://www.purgomalum.com/service/containsprofanity?text='"#{@value}")
   response = Net::HTTP.get(uri)
   if response == 'false'
-    $db.execute 'INSERT INTO Tasks(Id,Name,Status) VALUES (NULL,?,?)', [@value, @state]
+    if @state == 'Not Completed' 
+      @state=0
+      $db.execute 'INSERT INTO Tasks(Id,Name,Status) VALUES (NULL,?,?)', [@value, @state]
+    else
+      @state=1
+      $db.execute 'INSERT INTO Tasks(Id,Name,Status) VALUES (NULL,?,?)', [@value, @state]
+    end
   else
     redirect '/profanity'
   end
@@ -63,7 +70,7 @@ post '/search' do
     
     post '/completed' do
       user_input=params['id']
-      $db.execute "UPDATE Tasks SET Status = 'Completed' WHERE Id = ? ", [user_input]
+      $db.execute "UPDATE Tasks SET Status = '1' WHERE Id = ? ", [user_input]
       redirect '/completed'
       end
 
