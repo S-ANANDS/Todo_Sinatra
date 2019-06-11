@@ -1,4 +1,4 @@
-
+# frozen_string_literal: true
 
 require 'net/http'
 require 'sinatra'
@@ -19,15 +19,15 @@ end
 post '/add' do
   @value = params['task']
   @state = params['status']
-  
+
   uri = URI('https://www.purgomalum.com/service/containsprofanity?text='"#{@value}")
   response = Net::HTTP.get(uri)
   if response == 'false'
-    if @state == 'Not Completed' 
-      @state=0
+    if @state == 'Not Completed'
+      @state = 0
       $db.execute 'INSERT INTO Tasks(Id,Name,Status) VALUES (NULL,?,?)', [@value, @state]
     else
-      @state=1
+      @state = 1
       $db.execute 'INSERT INTO Tasks(Id,Name,Status) VALUES (NULL,?,?)', [@value, @state]
     end
   else
@@ -45,38 +45,35 @@ get '/result' do
 end
 
 get '/delete' do
-erb :delete
+  erb :delete
 end
 
 post '/delete' do
-  user_input=params['id']
+  user_input = params['id']
   $db.execute 'DELETE FROM Tasks WHERE ID = ?', [user_input]
   redirect '/delete'
-  end
+end
 
 get '/search' do
-  user_input=params['id']
+  user_input = params['id']
   erb :select, locals: { db: $db, user_input: user_input }
 end
 
 post '/search' do
-  user_input=params['id']
+  user_input = params['id']
   erb :select, locals: { db: $db, user_input: user_input }
-  end
+end
 
-  get '/completed' do
-    erb :completed
-    end
-    
-    post '/completed' do
-      user_input=params['id']
-      $db.execute "UPDATE Tasks SET Status = '1' WHERE Id = ? ", [user_input]
-      redirect '/completed'
-      end
+get '/completed' do
+  erb :completed
+end
 
-  get '/all' do 
-  
-  erb :mixture,locals: {db: $db}
-  
-  
-  end
+post '/completed' do
+  user_input = params['id']
+  $db.execute "UPDATE Tasks SET Status = '1' WHERE Id = ? ", [user_input]
+  redirect '/completed'
+end
+
+get '/all' do
+  erb :mixture, locals: { db: $db }
+end

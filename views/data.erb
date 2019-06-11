@@ -7,9 +7,15 @@
   </style>
   </head>
   <body>
-      <h1>All The Data</h1>
-      <h2>Task NO,Task_Details,Status</h2>
+     <table>
+  <tr>
+    <th>Id </th>
+    <th>Task_Details</th>
+    <th>Status</th>
+  </tr>
+  </table>
       <h3><%=db.execute('SELECT * FROM Tasks')%></h3>
+     
       <a href='/'>back</p>
   </body>
 </html>
